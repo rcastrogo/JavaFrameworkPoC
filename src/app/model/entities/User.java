@@ -14,7 +14,8 @@ public class User extends Entity {
 	public Integer id = 0;
 	public String nif = "";
 	public String nombre = "";
-	
+	public String descripcion = "";
+
 	public User() {
 		super();
 	}

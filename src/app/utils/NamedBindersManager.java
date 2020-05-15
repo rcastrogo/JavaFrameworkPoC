@@ -49,71 +49,76 @@ public class NamedBindersManager {
 			  sb = new StringBuilder();
 			}
 			if (key.length() > 0)	defs.put(key, sb.toString());
-      System.out.println("----------------------------------------------------------------------------------------------------");
-      System.out.println(String.format("loaded %1$s named binders", defs.size()));
-			System.out.println("----------------------------------------------------------------------------------------------------");
 			defs.keySet()
 					.stream()
 					.sorted()
-					.forEach( k -> {
-						System.out.println(k + ":" + defs.get(k));
-					});
-			System.out.println("----------------------------------------------------------------------------------------------------");
-			
-			generateBinderClass(defs);
-
+					.forEach( k -> System.out.println(" - " + k + ":" + defs.get(k)));	
+					System.out.println();
+					generateBinderClass(defs);		
+			System.out.println();
+			System.out.println(String.format("%1$s named binders", defs.size()));
+			System.out.println("----------------------------------------------------------------------------------------------------");	
     } catch (IOException e) {
 			e.printStackTrace();
 		};
 	}
 	
+	private static String parseDbMethod(String index, String dbType){
+		String type = dbType.toLowerCase().trim();
+		Integer i = 1 + Integer.parseInt(index);
+		if(type.startsWith("int")){
+			return "dataReader.getInt(" + i  + ")";
+		}
+		return "dataReader.getString(" + i + ")";
+	} 
+
+	private static void writeBinder(StringBuilder sb, String methodName, String targetType, String[] fieldDefinitions){
+		String name = methodName.replace('.', '_');
+		sb.append(String.format("  public static void %1$s(%2$s target, ResultSet dataReader) {\n", name, targetType));
+		sb.append("    try {\n");
+		for( String data : fieldDefinitions){
+			String[] tokens = data.split(",");
+			String index = tokens[0];
+			String field = tokens[1];
+			String dbType = tokens.length > 2 ? tokens[2] : "String";
+			String dbMethod = parseDbMethod(index, dbType);
+			sb.append(String.format("      target.%1$s = %2$s;\n", field, dbMethod));
+		}
+		sb.append("    } catch (SQLException e) {\n");
+		sb.append("      e.printStackTrace();\n");
+		sb.append("    }\n");
+		sb.append("  }\n");	
+	}
+
   private static void generateBinderClass(Map<String, String> defs){
 		try {		
-			
 			StringBuilder sb = new StringBuilder();
 			sb.append("package app.binders;\n");
+			sb.append("import app.model.entities.*;\n");
 			sb.append("import java.sql.ResultSet;\n");
 			sb.append("import java.sql.SQLException;\n");
 			sb.append("public class DynamicsBinders {\n");
 			for( String key : defs.keySet()){
-			
-				String methodName = key.split("@")[0].replace('.', '_');
+				String methodName = key.split("@")[0];
 				String targetType = key.split("@")[1];
-
-				sb.append(String.format("  //public static void %1$s(%2$s target, ResultSet dataReader) {\n", methodName, targetType));
-				sb.append("  //  try {\n");
-
-				sb.append("  //  } catch (SQLException e) {\n");
-				sb.append("	 //    e.printStackTrace();\n");
-				sb.append("  //  }\n");
-				sb.append("  //}\n");
+			  String[] metadata =  defs.get(key).split(";");
+				writeBinder(sb, methodName, targetType, metadata);
 			}
-
-			sb.append("  public static void app_model_entities_User(app.model.entities.User target, ResultSet dataReader) {\n");
-			sb.append("    try {\n");
-			sb.append("	     target.id  = dataReader.getInt(1);\n");
-			sb.append("	     target.nif = dataReader.getString(2);\n");
-			sb.append("	     target.nombre = dataReader.getString(3);\n");
-			sb.append("    } catch (SQLException e) {\n");
-			sb.append("	     e.printStackTrace();\n");
-			sb.append("    }\n");
-			sb.append("  }\n");
-
 			sb.append("}\n");
-			
+			DynamicCompiler compiler = new DynamicCompiler();
 			String className = "app.binders.DynamicsBinders";
 			String code = sb.toString();
-
-			System.out.println(code);
-
-			DynamicCompiler compiler = new DynamicCompiler();
-				if (compiler.compile(className, code)){
-				binders.put("app_model_entities_User", compiler.getBinder("app_model_entities_User"));
+			System.out.println("Compiling...");
+			// System.out.println(code);
+			if (compiler.compile(className, code)){
+				System.out.println("Mapping...");
 				for( String key : defs.keySet()){
-					System.out.println("compiler.getBinder(" + key + ")");
+					String methodName = key.split("@")[0].replace('.', '_');
+					System.out.println(" - " + methodName);
+					binders.put(methodName, compiler.getBinder(methodName));
 				}
 			}else{
-				System.out.println("Error al compilar");
+				System.out.println("Compilation error");
 			};
 
 		} catch (Exception e) {

@@ -30,11 +30,11 @@ public class NamedQueriesManager {
              if(line.charAt(0) == ';') return;
              if(line.charAt(0) == '-') return;
              int index = line.indexOf('%');
-             System.out.println(line.substring(1, index));
+             System.out.println(" - " + line.substring(1, index));
              namedQueries.put(line.substring(1, index), line.substring(index + 1, line.length()));
            });
-      System.out.println("----------------------------------------------------------------------------------------------------");
-      System.out.println(String.format("loaded %1$s named queries", namedQueries.size()));
+      System.out.println();
+      System.out.println(String.format("%1$s named queries", namedQueries.size()));
       System.out.println("----------------------------------------------------------------------------------------------------");
     } catch (IOException e) {
 			e.printStackTrace();

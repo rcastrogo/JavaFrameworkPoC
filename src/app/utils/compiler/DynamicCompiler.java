@@ -57,9 +57,9 @@ public class DynamicCompiler {
 			Method[] methods = fileManager.getClassLoader(null)
 			                        			.loadClass(fullName)
 																		.getMethods();
-			return Arrays.asList( methods)
+			return Arrays.asList(methods)
 									 .stream()
-									 .filter(m -> m.getName() == name )
+									 .filter(m -> m.getName().equals(name) )
 									 .collect(Collectors.toList())
 									 .get(0);
 		} catch (SecurityException | ClassNotFoundException e) {
@@ -83,48 +83,46 @@ public class DynamicCompiler {
 	}
 
 	public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager> {
-			private JavaClassObject javaClassObject;
+		private JavaClassObject javaClassObject;
 
-			public ClassFileManager(StandardJavaFileManager standardManager) {
-					super(standardManager);
-			}
+		public ClassFileManager(StandardJavaFileManager standardManager) {
+			super(standardManager);
+		}
 
-			@Override
-			public ClassLoader getClassLoader(Location location) {
-					return new SecureClassLoader() {
-							@Override
-							protected Class<?> findClass(String name) throws ClassNotFoundException { 
-								if(name == fullName) {
-									byte[] b = javaClassObject.getBytes();
-									return super.defineClass(name, javaClassObject.getBytes(), 0, b.length);									
-								}
-								return Class.forName(name);
-							}
-					};
-			}
+		@Override
+		public ClassLoader getClassLoader(Location location) {
+			return new SecureClassLoader() {
+				@Override
+				protected Class<?> findClass(String name) throws ClassNotFoundException { 
+					if(name == fullName) {
+						byte[] b = javaClassObject.getBytes();
+						return super.defineClass(name, javaClassObject.getBytes(), 0, b.length);									
+					}
+					return Class.forName(name);
+				}
+			};
+		}
 
-			public JavaFileObject getJavaFileForOutput(Location location, String className, JavaFileObject.Kind kind, FileObject sibling) throws IOException {
-					this.javaClassObject = new JavaClassObject(className, kind);
-					return this.javaClassObject;
-			}
+		public JavaFileObject getJavaFileForOutput(Location location, String className, JavaFileObject.Kind kind, FileObject sibling) throws IOException {
+			this.javaClassObject = new JavaClassObject(className, kind);
+			return this.javaClassObject;
+		}
 	}
 
 	public class JavaClassObject extends SimpleJavaFileObject {
-			protected final ByteArrayOutputStream bos =
-							new ByteArrayOutputStream();
+		protected final ByteArrayOutputStream bos =	new ByteArrayOutputStream();
 
-			public JavaClassObject(String name, Kind kind) {
-					super(URI.create("string:///" + name.replace('.', '/')
-									+ kind.extension), kind);
-			}
+		public JavaClassObject(String name, Kind kind) {
+			super(URI.create("string:///" + name.replace('.', '/') + kind.extension), kind);
+		}
 
-			public byte[] getBytes() {
-					return bos.toByteArray();
-			}
+		public byte[] getBytes() {
+			return bos.toByteArray();
+		}
 
-			@Override
-			public OutputStream openOutputStream() throws IOException {
-					return bos;
-			}
+		@Override
+		public OutputStream openOutputStream() throws IOException {
+			return bos;
+		}
 	}
 }
