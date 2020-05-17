@@ -19,18 +19,50 @@ public class BaseRepository implements Closeable {
     dbContext = new DbContext();
   }
 
-  public ResultSet load() throws SQLException {
-    String name = getDefaultSelectName();
-    return dbContext.executeNamedQuery(name);
+  public Integer delete(Integer id) {
+    return dbContext.executeNamedUpdate(getQueryNameFor("delete"), new Object[]{id});
   }
 
-  public ResultSet loadById(Integer id) throws SQLException {
-    String name = getDefaultSelectName();
-    return dbContext.executeNamedQuery(name, id);
+  public Integer insertWithAutoIncrement(Object[] values) {
+    return dbContext.executeNamedInsert(getQueryNameFor("insert"), values);
   }
 
-  private String getDefaultSelectName(){
-    return this.getClass().getName() + ".select";
+  public Integer insert(Object[] values) {
+    return insert(getQueryNameFor("insert"), values);
+  }
+
+  public Integer insert(String namedQuery, Object[] values)  {
+    return dbContext.executeNamedInsert(namedQuery, values);
+  }
+
+  public Integer update(Object[] values) {
+    return update(getQueryNameFor("update"), values);
+  }
+
+  public Integer update(String namedQuery, Object[] values) {
+    return dbContext.executeNamedUpdate(namedQuery, values);
+  }
+
+  public ResultSet load() {
+    try {
+      return dbContext.executeNamedQuery(getQueryNameFor("select"));
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public ResultSet loadById(Integer id) {
+    try {
+      return dbContext.executeNamedQuery(getQueryNameFor("select"), id);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private String getQueryNameFor(String action){
+    return this.getClass().getName() + "." + action;
   }
 
   private boolean auto = true;    /* To avoid close shared context */

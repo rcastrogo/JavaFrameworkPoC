@@ -50,6 +50,28 @@ public class DataServlet extends HttpServlet {
 			out.println(JsonSerializer.toXmlString(users));
 			out.println(JsonSerializer.toXmlString(user));
 
+			// ================================
+			// Delete
+			// ================================
+			user.id = 7;
+			user.delete();
+			// ================================
+			// Update
+			// ================================
+			user.id = 6;
+			user.nif = "Nif1";
+			user.nombre = "Rafa";
+			user.descripcion = "Hola caracola";
+			user.fechaDeAlta = "20201125 21:20:18";
+			user.save();
+			// ================================
+			// Insert
+			// ================================
+			// user.id = 0;
+			// user.nombre = "Rafa nuevo";
+			//user.save();
+
+
 		}
 		  
 		out.close();		

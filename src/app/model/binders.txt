@@ -6,7 +6,7 @@
  1, nif                       
  2, nombre                  
  3, descripcion                   
-;4, fechaDeAlta                  , datetime
+ 4, fechaDeAlta                  , datetime
 
 ; ===========================================================
 ; app.model.entities.User

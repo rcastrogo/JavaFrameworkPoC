@@ -1,7 +1,5 @@
 package app.model.entities;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import app.dal.*;
 import app.dal.repositories.UsuariosRepository;
@@ -23,11 +21,7 @@ public class Users extends EntityList<User> {
 
 	public Users load(){
 		try( UsuariosRepository repo = new UsuariosRepository(dbContext)){
-			try(ResultSet dataReader = repo.load()){
-				Loader.load(dataReader, this, entityClassName);   
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			Loader.load(repo.load(), this, entityClassName);   
 		}
 		return this;
 	}

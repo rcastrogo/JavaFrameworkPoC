@@ -18,8 +18,10 @@ public class Loader {
 
 	private static Entity loadOne(Entity target, ResultSet dataReader, boolean next) {
 		try {
-			if (next && dataReader.next() == false)
+			if (next && dataReader.next() == false){
+				dataReader.close();
 				return target;
+			}	
 			NamedBindersManager.bind(target, dataReader);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -35,6 +37,7 @@ public class Loader {
 			while (dataReader.next()) {
 				_list.add(loadOne(builder.newInstance(list.dbContext), dataReader, false));
 			}
+			dataReader.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

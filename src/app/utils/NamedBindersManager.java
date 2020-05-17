@@ -14,7 +14,7 @@ import app.utils.compiler.DynamicCompiler;
 
 public class NamedBindersManager {
 
-	private static final String RESOURCE_NAME = "./app/utils/data/binders.txt";
+	private static final String RESOURCE_NAME = "./app/model/binders.txt";
 	private static final Map<String, Method> binders = new HashMap<String, Method>();
 
 	static {
@@ -69,7 +69,10 @@ public class NamedBindersManager {
 		if(type.startsWith("int")){
 			return "dataReader.getInt(" + i  + ")";
 		}
-		return "dataReader.getString(" + i + ")";
+		if(type.startsWith("date")){
+			return "app.model.Entity.handleNullDate(dataReader.getDate(" + i  + "))";
+		}
+		return "app.model.Entity.handleNull(dataReader.getString(" + i + "))";
 	} 
 
 	private static void writeBinder(StringBuilder sb, String methodName, String targetType, String[] fieldDefinitions){

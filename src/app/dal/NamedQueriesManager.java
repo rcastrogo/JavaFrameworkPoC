@@ -9,7 +9,7 @@ import app.utils.Utils;
 
 public class NamedQueriesManager {
 
-  private static final String RESOURCE_NAME = "./app/utils/data/queries.txt";
+  private static final String RESOURCE_NAME = "./app/dal/queries.txt";
   private static Map<String, String> namedQueries = new HashMap<String, String>(); 
 
   static{

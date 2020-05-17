@@ -1,5 +1,0 @@
--- 
--- 
-#app.dal.repositories.UsuariosRepository.select%SELECT Id, Nif, Nombre, Descripcion FROM Usuario
-#app.dal.repositories.UsuariosRepository.count%SELECT COUNT(*) FROM Usuario
-

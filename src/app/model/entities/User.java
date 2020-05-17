@@ -1,8 +1,5 @@
 package app.model.entities;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import app.dal.*;
 import app.dal.repositories.UsuariosRepository;
 import app.model.Entity;
@@ -15,6 +12,7 @@ public class User extends Entity {
 	public String nif = "";
 	public String nombre = "";
 	public String descripcion = "";
+	public String fechaDeAlta = null;
 
 	public User() {
 		super();
@@ -28,19 +26,29 @@ public class User extends Entity {
 		return load(id);
 	}
 
-	public User load(Integer Id) {
+	public User delete(){
 		try( UsuariosRepository repo = new UsuariosRepository(dbContext)){
-			try(ResultSet dataReader = repo.loadById(Id)){
-			  Loader.loadOne(this, dataReader);
-			} catch (SQLException e) {
-				e.printStackTrace();
+			repo.delete(id);
+		}
+		return this;
+	}
+
+	public User save(){
+		try( UsuariosRepository repo = new UsuariosRepository(dbContext)){
+			if (id == 0){
+				id = repo.insert(nif, nombre, descripcion);
+			} else {
+				repo.update(id, nif, nombre, descripcion, fechaDeAlta);
 			}
 		}
 		return this;
 	}
 
-	public Integer getAge(){
-		return 6;
+	public User load(Integer Id) {
+		try( UsuariosRepository repo = new UsuariosRepository(dbContext)){
+			Loader.loadOne(this, repo.loadById(Id));
+		}
+		return this;
 	}
 
 }
