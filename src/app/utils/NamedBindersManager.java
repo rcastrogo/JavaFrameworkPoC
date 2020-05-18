@@ -41,7 +41,7 @@ public class NamedBindersManager {
 				if(line.charAt(0) == '-') continue;
 				if(line.charAt(0) != '#'){
 					if(sb.length() > 0)	sb.append(";");
-					sb.append(line.trim().replaceAll("\s*,\s*", ","));
+					sb.append(line.trim().replaceAll("\\s*,\\s*", ",")) ;
 					continue;
 				}
 				if (key.length() > 0)	defs.put(key, sb.toString());

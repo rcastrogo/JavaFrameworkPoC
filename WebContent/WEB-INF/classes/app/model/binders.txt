@@ -1,0 +1,19 @@
+; ===========================================================
+; app.model.entities.User
+; ===========================================================
+#app.model.entities.User@User
+ 0, id                           , Integer
+ 1, nif                       
+ 2, nombre                  
+ 3, descripcion                   
+ 4, fechaDeAlta                  , datetime
+
+; ===========================================================
+; app.model.entities.User
+; ===========================================================
+;#user_all@User
+;0, id                           , Integer
+;1, nif                       
+;2, nombre                  
+;3, descripcion                   
+;4, fechaDeAlta                  , datetime

@@ -1,16 +1,32 @@
 package app.utils;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Properties;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class Utils {
+
+	private Utils(){}
+	
+	private static Properties props = new Properties();
+ 
+	static {
+		Utils util = new Utils();
+		try {
+			props = util.getPropertiesFromClasspath("binders.properties"); 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static String getRequestBody(final HttpServletRequest request) {
 		try (BufferedReader reader = request.getReader()) {
@@ -83,9 +99,35 @@ public class Utils {
 								.getClassLoader()
 								.getResourceAsStream(name);
 	}
-
+	
 	public static boolean isEmpty(final CharSequence charSequence) {
 		return charSequence == null || charSequence.length() == 0;
+  }
+ 
+  public static String getProperty(String key){
+    return props.getProperty(key);
+  }
+ 
+  public static Set<Object> getkeys(){
+    return props.keySet();
+  }
+ 
+  public static Properties getProperties(){
+    return props;
+  }
+ 
+  private Properties getPropertiesFromClasspath(String fileName) throws IOException {
+    Properties props = new Properties();
+		try (InputStream  inputStream = Thread.currentThread()
+																					.getContextClassLoader()
+																					.getResourceAsStream(fileName)){
+      if (inputStream == null) {
+        throw new FileNotFoundException("property file '" + fileName + "' not found in the classpath");
+      }
+			props.load(inputStream);
+			System.out.println("Load properties file: " + fileName);
+    }
+    return props;
   }
 
 }

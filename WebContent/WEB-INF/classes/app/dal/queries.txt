@@ -1,0 +1,8 @@
+-- 
+-- 
+#app.dal.repositories.UsuariosRepository.select%SELECT Id, Nif, Nombre, Descripcion, FechaDeAlta FROM Usuario
+#app.dal.repositories.UsuariosRepository.delete%DELETE FROM Usuario WHERE Id = ?;
+#app.dal.repositories.UsuariosRepository.insert%INSERT INTO Usuario (Nif, Nombre, Descripcion, FechaDeAlta) VALUES(?, ?, ?, GETDATE());
+#app.dal.repositories.UsuariosRepository.update%UPDATE Usuario SET Nif = ?, Nombre = ?, Descripcion = ?, FechaDeAlta = ? WHERE Id = ?
+#app.dal.repositories.UsuariosRepository.count%SELECT COUNT(*) FROM Usuario
+

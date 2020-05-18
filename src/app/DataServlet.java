@@ -26,7 +26,10 @@ public class DataServlet extends HttpServlet {
 		out.println("Method : " + request.getMethod());
 		out.println("Headers: " + Utils.getHeadersInfo(request));
 		out.println("Body   : " + Utils.getRequestBody(request));	
-
+		out.println("==========================================================================");
+		out.println("Properties.Numero: " + app.utils.Utils.getProperty("Numero"));
+		out.println("Properties.Letras: " + app.utils.Utils.getProperty("Letras"));
+		out.println("==========================================================================");
 		try(DbContext dbContext = new DbContext()){
 
 			User user = new User(dbContext).load(2);

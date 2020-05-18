@@ -8,7 +8,7 @@ public class Utils{
 
   public static String parseDate(String value){
     if(app.utils.Utils.isEmpty(value)) return null;
-    return value;
+    return value; 
   }
 
 }
