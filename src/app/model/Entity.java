@@ -2,6 +2,8 @@ package app.model;
 
 import java.sql.Date;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import app.dal.*;
@@ -9,8 +11,10 @@ import app.dal.*;
 public abstract class Entity {
 
   @JsonIgnore()
+  @XmlTransient()
 	public Object tag = null;
 	@JsonIgnore()
+	@XmlTransient()
 	public DbContext dbContext = null;
 	
 	public Entity(){ }
