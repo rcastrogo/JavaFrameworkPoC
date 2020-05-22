@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://axis.webservices.app" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://axis.webservices.app" xmlns:intf="http://axis.webservices.app" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://axis.webservices.app" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="one">
+    <complexType/>
+   </element>
+   <element name="oneResponse">
+    <complexType>
+     <sequence>
+      <element name="oneReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="oneRequest">
+
+      <wsdl:part element="impl:one" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="oneResponse">
+
+      <wsdl:part element="impl:oneResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="MathWS">
+
+      <wsdl:operation name="one">
+
+         <wsdl:input message="impl:oneRequest" name="oneRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:oneResponse" name="oneResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="MathWSSoapBinding" type="impl:MathWS">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="one">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="oneRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="oneResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="MathWSService">
+
+      <wsdl:port binding="impl:MathWSSoapBinding" name="MathWS">
+
+         <wsdlsoap:address location="http://localhost:8080/web001/services/MathWS"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

@@ -22,7 +22,7 @@ public class TestWS {
   
   @WebMethod()
   public String test(@WebParam(name="name1") String name){
-    return "Hola " + name;
+    return "Hola ::  " + name;
   }
   
   @WebMethod()

@@ -29,7 +29,7 @@ public class LogFilter implements Filter {
 		try {
 			var req = (HttpServletRequest) request;
 	
-			System.out.printf("%1$s %2$s %3$s\n", 
+			System.out.printf("-----> %1$s %2$s %3$s\n", 
 					              df.format(new Date()),
 					              req.getMethod(),
 					              req.getRequestURI())

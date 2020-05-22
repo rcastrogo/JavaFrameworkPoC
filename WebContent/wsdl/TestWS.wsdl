@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://axis.webservices.app" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://axis.webservices.app" xmlns:intf="http://axis.webservices.app" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://axis.webservices.app" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="version">
+    <complexType/>
+   </element>
+   <element name="versionResponse">
+    <complexType>
+     <sequence>
+      <element name="versionReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="save">
+    <complexType/>
+   </element>
+   <element name="saveResponse">
+    <complexType>
+     <sequence>
+      <element name="saveReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="versionResponse">
+
+      <wsdl:part element="impl:versionResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="saveRequest">
+
+      <wsdl:part element="impl:save" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="saveResponse">
+
+      <wsdl:part element="impl:saveResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="versionRequest">
+
+      <wsdl:part element="impl:version" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="TestWS">
+
+      <wsdl:operation name="version">
+
+         <wsdl:input message="impl:versionRequest" name="versionRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:versionResponse" name="versionResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="save">
+
+         <wsdl:input message="impl:saveRequest" name="saveRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:saveResponse" name="saveResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="TestWSSoapBinding" type="impl:TestWS">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="version">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="versionRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="versionResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="save">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="saveRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="saveResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="TestWSService">
+
+      <wsdl:port binding="impl:TestWSSoapBinding" name="TestWS">
+
+         <wsdlsoap:address location="http://localhost:8080/web001/services/TestWS"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
