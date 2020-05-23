@@ -45,6 +45,15 @@
   <ns1:parameter name="className" value="org.apache.axis.Version"/>
  </ns1:service>
  <ns1:service name="MathWS" provider="java:RPC" style="wrapped" use="literal">
+  
+  <requestFlow>
+    <handler type="java:org.apache.ws.axis.security.WSDoAllReceiver">
+      <parameter name="passwordCallbackClass" value="app.webservices.security.PWCallback"/>
+      <parameter name="action" value="UsernameToken"/>
+      <parameter name="passwordType" value="PasswordText" />
+    </handler>
+  </requestFlow>
+  
   <ns1:operation name="one" qname="ns3:one" returnQName="ns3:oneReturn" returnType="xsd:int" soapAction="" xmlns:ns3="http://axis.webservices.app" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   <ns1:parameter name="allowedMethods" value="one"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
