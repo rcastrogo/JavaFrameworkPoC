@@ -108,13 +108,9 @@ public class TestWSSoapBindingStub extends org.apache.axis.client.Stub implement
 		_call.setOperationName(new javax.xml.namespace.QName("http://axis.webservices.app", "version"));
 		setRequestHeaders(_call);
 		setAttachments(_call);
-		try {
-			System.out.println("------ 1");
+		//try {
 			java.lang.Object _resp = _call.invoke(new java.lang.Object[] {});	
-			System.out.println(_resp);
-			
 			if (_resp instanceof java.rmi.RemoteException) {
-
 				throw (java.rmi.RemoteException) _resp;
 			} else {
 				extractAttachments(_call);
@@ -124,11 +120,9 @@ public class TestWSSoapBindingStub extends org.apache.axis.client.Stub implement
 					return (java.lang.String) org.apache.axis.utils.JavaUtils.convert(_resp, java.lang.String.class);
 				}
 			}
-		} catch (org.apache.axis.AxisFault axisFaultException) {
-			System.out.println("------ 2");	
-			axisFaultException.printStackTrace();
-			throw axisFaultException;
-		}
+//		} catch (org.apache.axis.AxisFault axisFaultException) {
+//			throw axisFaultException;
+//		}
 	}
 
 	public java.lang.String save() throws java.rmi.RemoteException {

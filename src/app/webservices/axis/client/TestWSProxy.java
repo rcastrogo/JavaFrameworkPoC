@@ -23,7 +23,6 @@ public class TestWSProxy implements app.webservices.axis.client.ITestWS {
         else
           _endpoint = (String)((javax.xml.rpc.Stub)testWS)._getProperty("javax.xml.rpc.service.endpoint.address");
       }
-      
     }
     catch (javax.xml.rpc.ServiceException serviceException) {}
   }
@@ -40,20 +39,17 @@ public class TestWSProxy implements app.webservices.axis.client.ITestWS {
   }
   
   public app.webservices.axis.client.ITestWS getTestWS() {
-    if (testWS == null)
-      _initTestWSProxy();
+    if (testWS == null) _initTestWSProxy();
     return testWS;
   }
   
   public java.lang.String version() throws java.rmi.RemoteException{
-    if (testWS == null)
-      _initTestWSProxy();
+    if (testWS == null) _initTestWSProxy();
     return testWS.version();
   }
   
   public java.lang.String save() throws java.rmi.RemoteException{
-    if (testWS == null)
-      _initTestWSProxy();
+    if (testWS == null) _initTestWSProxy();
     return testWS.save();
   }
   
