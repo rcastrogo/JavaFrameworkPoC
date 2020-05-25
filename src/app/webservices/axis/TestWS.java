@@ -1,14 +1,13 @@
 package app.webservices.axis;
 
-
 public class TestWS {
-  
+	
   public String version() {
-    return "Versión 1.1";
-  }
-
+  	return "1.0";
+  };
+  
   public String save() {
-    return "Save invoked!!";
-  }
+  	return "Save...";
+  };
   
 }
