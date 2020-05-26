@@ -19,9 +19,12 @@
    </ns1:handler>
   </ns1:requestFlow>
  </ns1:globalConfiguration>
+ 
  <ns1:handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
  <ns1:handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
  <ns1:handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+ <ns1:handler name="web-service-logger" type="java:app.webservices.axis.DebugHandler"/>
+ 
  <ns1:service name="TestWS" provider="java:RPC" style="wrapped" use="literal">
   <ns2:operation name="version" qname="ns1:version" returnQName="ns1:versionReturn" returnType="xsd:string" soapAction="" xmlns:ns1="http://axis.webservices.app" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://xml.apache.org/axis/wsdd/"/>
   <ns1:operation name="save" qname="ns2:save" returnQName="ns2:saveReturn" returnType="xsd:string" soapAction="" xmlns:ns2="http://axis.webservices.app" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
@@ -34,25 +37,39 @@
   <ns1:parameter name="wsdlTargetNamespace" value="http://axis.webservices.app"/>
   <ns1:parameter name="wsdlServiceElement" value="TestWSService"/>
  </ns1:service>
+ 
  <ns1:service name="AdminService" provider="java:MSG">
   <ns1:parameter name="allowedMethods" value="AdminService"/>
   <ns1:parameter name="enableRemoteAdmin" value="false"/>
   <ns1:parameter name="className" value="org.apache.axis.utils.Admin"/>
   <ns1:namespace>http://xml.apache.org/axis/wsdd/</ns1:namespace>
  </ns1:service>
+ 
  <ns1:service name="Version" provider="java:RPC">
   <ns1:parameter name="allowedMethods" value="getVersion"/>
   <ns1:parameter name="className" value="org.apache.axis.Version"/>
  </ns1:service>
+ 
  <ns1:service name="MathWS" provider="java:RPC" style="wrapped" use="literal">
   
   <requestFlow>
+<!--     <handler type="java:org.apache.axis.handlers.LogHandler"> -->
+<!--       <parameter name="LogHandler.writeToConsole" value="true" />   -->
+<!--     </handler>  -->
+    <handler type="web-service-logger"></handler>
     <handler type="java:org.apache.ws.axis.security.WSDoAllReceiver">
       <parameter name="passwordCallbackClass" value="app.webservices.security.PWCallback"/>
       <parameter name="action" value="UsernameToken"/>
       <parameter name="passwordType" value="PasswordText" />
     </handler>
   </requestFlow>
+  
+  <responseFlow>
+<!--     <handler type="java:org.apache.axis.handlers.LogHandler"> -->
+<!--       <parameter name="LogHandler.writeToConsole" value="true" />   -->
+<!--     </handler>   -->
+    <handler type="web-service-logger"></handler>
+  </responseFlow>
   
   <ns1:operation name="one" qname="ns3:one" returnQName="ns3:oneReturn" returnType="xsd:int" soapAction="" xmlns:ns3="http://axis.webservices.app" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   <ns1:parameter name="allowedMethods" value="one"/>

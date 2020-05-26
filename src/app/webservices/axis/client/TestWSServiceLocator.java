@@ -1,9 +1,3 @@
-/**
- * TestWSServiceLocator.java
- *
- * This file was auto-generated from WSDL
- * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
- */
 
 package app.webservices.axis.client;
 
@@ -12,21 +6,18 @@ public class TestWSServiceLocator
   implements app.webservices.axis.client.TestWSService {
 
 	private static final long serialVersionUID = 1L;
+	private java.lang.String TestWS_address = "http://localhost:8080/web001/services/TestWS";	
+	
 
-	public TestWSServiceLocator() {
-	}
+	public TestWSServiceLocator() {	}
 
 	public TestWSServiceLocator(org.apache.axis.EngineConfiguration config) {
 		super(config);
 	}
 
-	public TestWSServiceLocator(java.lang.String wsdlLoc, javax.xml.namespace.QName sName)
-			throws javax.xml.rpc.ServiceException {
+	public TestWSServiceLocator(java.lang.String wsdlLoc, javax.xml.namespace.QName sName) throws javax.xml.rpc.ServiceException {
 		super(wsdlLoc, sName);
 	}
-
-	// Use to get a proxy class for TestWS
-	private java.lang.String TestWS_address = "http://localhost:8080/web001/services/TestWS";
 
 	public java.lang.String getTestWSAddress() {
 		return TestWS_address;

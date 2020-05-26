@@ -11,7 +11,6 @@ public class PWCallback implements CallbackHandler {
 	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
 
 		for (Callback callback : callbacks) {	
-    	
       if (callback instanceof WSPasswordCallback) {
         WSPasswordCallback pc = (WSPasswordCallback)callback; 
         String username = pc.getIdentifier();
