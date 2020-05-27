@@ -10,6 +10,9 @@ import java.sql.Statement;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 
+import app.loggin.Logmanager;
+import app.utils.Utils;
+
 public class DbContext implements Closeable {
 	
   Connection conn = null; 
@@ -19,33 +22,33 @@ public class DbContext implements Closeable {
     try {
     	DriverManager.registerDriver(new SQLServerDriver());
     } catch (SQLException ex) {
-      ex.printStackTrace();
+    	((Logmanager)Utils.getLogger()).error(ex);
     }  	
   }
 
 	public DbContext(){
     try {
 			conn = DriverManager.getConnection(dbURL);
-			System.out.printf("Connetion.open: %1$d\n", conn.hashCode());
+			Utils.getLogger().log("Connetion.open: %1$d", conn.hashCode());
     } catch (SQLException ex) {
-      ex.printStackTrace();
+    	((Logmanager)Utils.getLogger()).error(ex);
     }		
 	}
 	
   public ResultSet executeNamedQuery(String name) throws SQLException {
-		//System.out.println("executeNamedQuery: " + name);
+		//Utils.getLogger().log("executeNamedQuery: " + name);
 		String query = NamedQueriesManager.getNamedQuery(name);
     return executeQuery(query);
 	}
 	
 	public ResultSet executeNamedQuery(String name, Integer id) throws SQLException {
-		//System.out.println("executeNamedQuery: " + name);
+		//Utils.getLogger().log("executeNamedQuery: " + name);
 		String query = NamedQueriesManager.getNamedQuery(name);
     return executeQuery(query + " WHERE Id = " + id.toString());
 	}
 
 	public ResultSet executeQuery(String sqlQuery) throws SQLException {
-		System.out.println(sqlQuery);
+		Utils.getLogger().log(sqlQuery);
 		return createCommand().executeQuery(sqlQuery);
 	}
 	
@@ -59,7 +62,7 @@ public class DbContext implements Closeable {
         return dataReader.getObject(1);  
       }
 		} catch (SQLException e) {
-			e.printStackTrace();
+			((Logmanager)Utils.getLogger()).error(e);
 		}
 		return 0;			
 	}
@@ -68,10 +71,10 @@ public class DbContext implements Closeable {
 		String sql = NamedQueriesManager.getNamedQuery(name);
 		try( PreparedStatement cmd = prepareStatement(conn, sql, Statement.NO_GENERATED_KEYS, values) ){
 			Integer rows = cmd.executeUpdate();
-			System.out.println(rows + " rows affected");
+			Utils.getLogger().log(rows + " rows affected");
 		  return rows;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			((Logmanager)Utils.getLogger()).error(e);
 			return 0;			
 		}
 	}
@@ -80,7 +83,7 @@ public class DbContext implements Closeable {
 		String sql = NamedQueriesManager.getNamedQuery(name);
 		try( PreparedStatement cmd = prepareStatement(conn, sql, Statement.RETURN_GENERATED_KEYS, values) ){
 			Integer affectedRows = cmd.executeUpdate();
-			System.out.println(affectedRows + " rows affected");
+			Utils.getLogger().log(affectedRows + " rows affected");
 			if (affectedRows != 0) {
 				ResultSet generatedKeys = cmd.getGeneratedKeys();
 				if (generatedKeys.next()) {
@@ -89,7 +92,7 @@ public class DbContext implements Closeable {
 			}
 		  return -1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			((Logmanager)Utils.getLogger()).error(e);
 			return 0;			
 		}
 	}
@@ -109,7 +112,7 @@ public class DbContext implements Closeable {
 				}
 			}
 			String logSql = String.format(sql.replace("?", "%s"),  values);
-			System.out.println(logSql);
+			Utils.getLogger().log(logSql);
 			return preparedStatement;
   }
 
@@ -124,11 +127,11 @@ public class DbContext implements Closeable {
 				closing = true;
 				try {
 					if (conn != null && !conn.isClosed()) {
-						System.out.printf("Connetion.close: %1$d\n", conn.hashCode());
+						Utils.getLogger().log("Connetion.close: %1$d", conn.hashCode());
 						conn.close();
 					}
 				} catch (SQLException ex) {
-					ex.printStackTrace();
+					((Logmanager)Utils.getLogger()).error(ex);
 				}	
 				conn = null;
 			}

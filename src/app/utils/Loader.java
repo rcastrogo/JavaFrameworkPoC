@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import app.dal.DbContext;
+import app.loggin.Logmanager;
 import app.model.Entity;
 import app.model.EntityList;
 
@@ -24,7 +25,7 @@ public class Loader {
 			}	
 			NamedBindersManager.bind(target, dataReader);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			((Logmanager)Utils.getLogger()).error(e);
 		}
 		return target;
 	}
@@ -39,7 +40,7 @@ public class Loader {
 			}
 			dataReader.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			((Logmanager)Utils.getLogger()).error(e);
 		}
 	}
 

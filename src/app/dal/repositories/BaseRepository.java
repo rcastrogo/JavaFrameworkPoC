@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import app.dal.DbContext;
+import app.loggin.Logmanager;
+import app.utils.Utils;
 
 public class BaseRepository implements Closeable {
 
@@ -47,7 +49,7 @@ public class BaseRepository implements Closeable {
     try {
       return dbContext.executeNamedQuery(getQueryNameFor("select"));
     } catch (SQLException e) {
-      e.printStackTrace();
+    	((Logmanager)Utils.getLogger()).error(e);
       return null;
     }
   }
@@ -56,7 +58,7 @@ public class BaseRepository implements Closeable {
     try {
       return dbContext.executeNamedQuery(getQueryNameFor("select"), id);
     } catch (SQLException e) {
-      e.printStackTrace();
+    	((Logmanager)Utils.getLogger()).error(e);
       return null;
     }
   }

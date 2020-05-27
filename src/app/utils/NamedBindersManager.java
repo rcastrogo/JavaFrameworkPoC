@@ -9,8 +9,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import app.loggin.Logmanager;
 import app.model.Entity;
 import app.utils.compiler.DynamicCompiler;
+import app.utils.Utils;
 
 public class NamedBindersManager {
 
@@ -18,17 +20,17 @@ public class NamedBindersManager {
 	private static final Map<String, Method> binders = new HashMap<String, Method>();
 
 	static {
-		System.out.println();
-    System.out.println("---------------------------------------------- Binders ---------------------------------------------");
-		System.out.println(" _   _                                  _   ______   _               _                     ");
-		System.out.println("| \\ | |                                | |  | ___ \\ (_)             | |                    ");
-		System.out.println("|  \\| |   __ _   _ __ ___     ___    __| |  | |_/ /  _   _ __     __| |   ___   _ __   ___ ");
-		System.out.println("| . ` |  / _` | | '_ ` _ \\   / _ \\  / _` |  | ___ \\ | | | '_ \\   / _` |  / _ \\ | '__| / __|");
-		System.out.println("| |\\  | | (_| | | | | | | | |  __/ | (_| |  | |_/ / | | | | | | | (_| | |  __/ | |    \\__ \\");
-		System.out.println("\\ | \\_/  \\__,_| |_| |_| |_|  \\___|  \\__,_|  \\____/  |_| |_| |_|  \\__,_|  \\___| |_|    |___/");
-    System.out.println("----------------------------------------------------------------------------------------------------");
-		System.out.println("Loading...");
-
+		Utils.getLogger()
+		     .log()
+			   .log("---------------------------------------------- Binders ---------------------------------------------")
+				 .log(" _   _                                  _   ______   _               _                     ")
+				 .log("| \\ | |                                | |  | ___ \\ (_)             | |                    ")
+				 .log("|  \\| |   __ _   _ __ ___     ___    __| |  | |_/ /  _   _ __     __| |   ___   _ __   ___ ")
+				 .log("| . ` |  / _` | | '_ ` _ \\   / _ \\  / _` |  | ___ \\ | | | '_ \\   / _` |  / _ \\ | '__| / __|")
+				 .log("| |\\  | | (_| | | | | | | | |  __/ | (_| |  | |_/ / | | | | | | | (_| | |  __/ | |    \\__ \\")
+				 .log("\\ | \\_/  \\__,_| |_| |_| |_|  \\___|  \\__,_|  \\____/  |_| |_| |_|  \\__,_|  \\___| |_|    |___/")
+			   .log("----------------------------------------------------------------------------------------------------")
+				 .log("Loading...");
 		Map<String, String> defs = new HashMap<String, String>();
 		StringBuilder sb = new StringBuilder();
 		String key = "";
@@ -52,14 +54,14 @@ public class NamedBindersManager {
 			defs.keySet()
 					.stream()
 					.sorted()
-					.forEach( k -> System.out.println(" - " + k + ":" + defs.get(k)));	
-					System.out.println();
+					.forEach( k -> Utils.getLogger().log(" - " + k + ":" + defs.get(k)));	
+					Utils.getLogger().log();
 					generateBinderClass(defs);		
-			System.out.println();
-			System.out.println(String.format("%1$s named binders", defs.size()));
-			System.out.println("----------------------------------------------------------------------------------------------------");	
+			Utils.getLogger().log();
+			Utils.getLogger().log("%1$s named binders", defs.size());
+			Utils.getLogger().log("----------------------------------------------------------------------------------------------------");	
     } catch (IOException e) {
-			e.printStackTrace();
+    	((Logmanager)Utils.getLogger()).error(e);
 		};
 	}
 	
@@ -88,7 +90,7 @@ public class NamedBindersManager {
 			sb.append(String.format("      target.%1$s = %2$s;\n", field, dbMethod));
 		}
 		sb.append("    } catch (SQLException e) {\n");
-		sb.append("      e.printStackTrace();\n");
+		sb.append("      ((Logmanager)app.utils.Utils.getLogger()).error(e);\n");
 		sb.append("    }\n");
 		sb.append("  }\n");	
 	}
@@ -97,6 +99,7 @@ public class NamedBindersManager {
 		try {		
 			StringBuilder sb = new StringBuilder();
 			sb.append("package app.binders;\n");
+			sb.append("import app.loggin.Logmanager;\n");
 			sb.append("import app.model.entities.*;\n");
 			sb.append("import java.sql.ResultSet;\n");
 			sb.append("import java.sql.SQLException;\n");
@@ -111,21 +114,21 @@ public class NamedBindersManager {
 			DynamicCompiler compiler = new DynamicCompiler();
 			String className = "app.binders.DynamicsBinders";
 			String code = sb.toString();
-			System.out.println("Compiling...");
-			// System.out.println(code);
+			Utils.getLogger().log("Compiling...");
+			// Utils.getLogger().log(code);
 			if (compiler.compile(className, code)){
-				System.out.println("Mapping...");
+				Utils.getLogger().log("Mapping...");
 				for( String key : defs.keySet()){
 					String methodName = key.split("@")[0].replace('.', '_');
-					System.out.println(" - " + methodName);
+					Utils.getLogger().log(" - " + methodName);
 					binders.put(methodName, compiler.getBinder(methodName));
 				}
 			}else{
-				System.out.println("Compilation error");
+				Utils.getLogger().log("Compilation error");
 			};
 
 		} catch (Exception e) {
-				System.out.println(e.getMessage());
+				Utils.getLogger().log(e.getMessage());
 		}
 	}
 
@@ -145,7 +148,7 @@ public class NamedBindersManager {
 				method = NamedBindersManager.class.getMethod(name, target.getClass(), ResultSet.class);
 			} catch (NoSuchMethodException | 
 			         SecurityException e) {
-				e.printStackTrace();
+				((Logmanager)Utils.getLogger()).error(e);
 			}
 			binders.put(name, method);
 		}
@@ -154,7 +157,7 @@ public class NamedBindersManager {
 		}  catch (IllegalAccessException   |
 							IllegalArgumentException | 
 							InvocationTargetException e) {
-			e.printStackTrace();
+			((Logmanager)Utils.getLogger()).error(e);
 		}
 	}
 

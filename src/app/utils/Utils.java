@@ -6,25 +6,40 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import app.loggin.ILogger;
+import app.loggin.Logmanager;
 
 public class Utils {
 
 	private Utils(){}
-	
-	private static Properties props = new Properties();
+	private static Properties props = null;
+	private static Logmanager logmanager = null;
  
 	static {
 		Utils util = new Utils();
 		try {
+			logmanager = new Logmanager();			
 			props = util.getPropertiesFromClasspath("binders.properties"); 
 		} catch (IOException e) {
-			e.printStackTrace();
+			if(logmanager != null) {
+				logmanager.error(e);
+			}
 		}
 	}
 
@@ -75,7 +90,7 @@ public class Utils {
 				lines.add(line);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logmanager.error(e);
 		}
 		return lines;
 	}
@@ -89,7 +104,7 @@ public class Utils {
 			}
 			return sb.toString();
 		}catch (IOException e) {
-			e.printStackTrace();
+			logmanager.error(e);
 		}
 		return "";
 	}
@@ -124,10 +139,30 @@ public class Utils {
       if (inputStream == null) {
         throw new FileNotFoundException("property file '" + fileName + "' not found in the classpath");
       }
+ 			logmanager.log("Loading properties file: " + fileName);     
 			props.load(inputStream);
-			System.out.println("Load properties file: " + fileName);
     }
     return props;
   }
 
+  public static ILogger getLogger() {
+  	return logmanager;
+  }
+  
+  public static String formatXml(String xml){
+    Source xmlInput = new StreamSource(new StringReader(xml));
+    StringWriter stringWriter = new StringWriter();
+		try {
+		  TransformerFactory transformerFactory = TransformerFactory.newInstance();			
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			transformer.transform(xmlInput, new StreamResult(stringWriter));	
+			return stringWriter.toString()
+					               .replace("\r\n", "\n");  
+		} catch (TransformerException e) {
+			logmanager.error(e);
+		}
+	  return "";
+	}
 }

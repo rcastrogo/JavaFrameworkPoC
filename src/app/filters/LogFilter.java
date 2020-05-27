@@ -20,7 +20,6 @@ import app.utils.Utils;
 @WebFilter("/*")
 public class LogFilter implements Filter {
 
-	private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 	private FilterConfig filterConfig;
 	
 	public void doFilter(ServletRequest request, 
@@ -28,12 +27,9 @@ public class LogFilter implements Filter {
 			                 FilterChain filterChain) throws IOException, ServletException {
 		try {
 			var req = (HttpServletRequest) request;
-	
-			System.out.printf("-----> %1$s %2$s %3$s\n", 
-					              df.format(new Date()),
-					              req.getMethod(),
-					              req.getRequestURI())
-			          .print(Utils.getParameters(req));			
+	    Utils.getLogger()
+	         .log(String.format("%1$s %2$s", req.getMethod(), req.getRequestURI()))
+	         .log(Utils.getParameters(req));			
 		} finally {
 			filterChain.doFilter(request, response);			
 		}

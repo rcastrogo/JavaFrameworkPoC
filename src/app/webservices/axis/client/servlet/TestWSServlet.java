@@ -18,6 +18,8 @@ import org.apache.axis.client.Call;
 import org.apache.axis.encoding.XMLType;
 import org.apache.axis.message.SOAPHeaderElement;
 
+import app.utils.Utils;
+
 
 @WebServlet("/test-ws-security")
 public class TestWSServlet extends HttpServlet {
@@ -38,9 +40,9 @@ public class TestWSServlet extends HttpServlet {
   	  call.setReturnType(XMLType.XSD_INT);
   	 
    	  Integer result = (Integer) call.invoke(new Object[]{}); 
-  	  
-  	  String req = call.getMessageContext().getRequestMessage().getSOAPPartAsString();   
-  	  String res = call.getMessageContext().getResponseMessage().getSOAPPartAsString();
+
+  	  String req = Utils.formatXml(call.getMessageContext().getRequestMessage().getSOAPPartAsString());   
+  	  String res = Utils.formatXml(call.getMessageContext().getResponseMessage().getSOAPPartAsString());
   	  
   	  out.println( "Axis client (org.apache.axis.client.Service):  " + result);
   	  out.println( "Request:\n" + req);
