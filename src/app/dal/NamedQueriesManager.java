@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import app.loggin.Logmanager;
 import app.utils.Utils;
 
 public class NamedQueriesManager {
@@ -39,7 +38,7 @@ public class NamedQueriesManager {
       Utils.getLogger().log(String.format("%1$s named queries", namedQueries.size()));
       Utils.getLogger().log("----------------------------------------------------------------------------------------------------");
     } catch (IOException e) {
-    	((Logmanager)Utils.getLogger()).error(e);
+    	Utils.getLogger().error(e);
 		};   
   }
 

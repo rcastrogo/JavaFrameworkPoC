@@ -10,7 +10,6 @@ import java.sql.Statement;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 
-import app.loggin.Logmanager;
 import app.utils.Utils;
 
 public class DbContext implements Closeable {
@@ -22,7 +21,7 @@ public class DbContext implements Closeable {
     try {
     	DriverManager.registerDriver(new SQLServerDriver());
     } catch (SQLException ex) {
-    	((Logmanager)Utils.getLogger()).error(ex);
+    	Utils.getLogger().error(ex);
     }  	
   }
 
@@ -31,7 +30,7 @@ public class DbContext implements Closeable {
 			conn = DriverManager.getConnection(dbURL);
 			Utils.getLogger().log("Connetion.open: %1$d", conn.hashCode());
     } catch (SQLException ex) {
-    	((Logmanager)Utils.getLogger()).error(ex);
+    	Utils.getLogger().error(ex);;
     }		
 	}
 	
@@ -62,7 +61,7 @@ public class DbContext implements Closeable {
         return dataReader.getObject(1);  
       }
 		} catch (SQLException e) {
-			((Logmanager)Utils.getLogger()).error(e);
+			Utils.getLogger().error(e);
 		}
 		return 0;			
 	}
@@ -74,7 +73,7 @@ public class DbContext implements Closeable {
 			Utils.getLogger().log(rows + " rows affected");
 		  return rows;
 		} catch (SQLException e) {
-			((Logmanager)Utils.getLogger()).error(e);
+			Utils.getLogger().error(e);
 			return 0;			
 		}
 	}
@@ -92,7 +91,7 @@ public class DbContext implements Closeable {
 			}
 		  return -1;
 		} catch (SQLException e) {
-			((Logmanager)Utils.getLogger()).error(e);
+			Utils.getLogger().error(e);
 			return 0;			
 		}
 	}
@@ -131,7 +130,7 @@ public class DbContext implements Closeable {
 						conn.close();
 					}
 				} catch (SQLException ex) {
-					((Logmanager)Utils.getLogger()).error(ex);
+					Utils.getLogger().error(ex);
 				}	
 				conn = null;
 			}

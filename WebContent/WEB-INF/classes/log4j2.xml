@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <Appenders>
+  
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%m%n" />
+    </Console>
+
+    <RollingFile name="file"
+      fileName="/local/content/tomcat/idp/logs/idp.txt" append="true"
+      filePattern="/local/content/tomcat/idp/logs/idp.txt.%i">
+      <PatternLayout>
+        <Pattern>%m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10 MB" />
+      </Policies>
+      <DefaultRolloverStrategy max="10" />
+    </RollingFile>
+  </Appenders>
+
+  <Loggers>
+  
+    <Logger name="app" level="ALL">
+      <AppenderRef ref="console" />
+      <AppenderRef ref="file" />
+    </Logger>
+    
+  </Loggers>
+  
+</Configuration>

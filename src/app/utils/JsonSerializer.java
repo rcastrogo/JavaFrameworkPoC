@@ -6,8 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-import app.loggin.Logmanager;
-import app.utils.Utils;
 
 public class JsonSerializer {
 
@@ -26,7 +24,7 @@ public class JsonSerializer {
 		try {
 			return serializer.writeValueAsString(value);
 		} catch (JsonProcessingException e) {
-			((Logmanager)Utils.getLogger()).error(e);
+			Utils.getLogger().error(e);
 		}
 		return "{}";
 	}	
@@ -35,7 +33,7 @@ public class JsonSerializer {
 		try {
 			return xmlSerializer.writeValueAsString(value);
 		} catch (JsonProcessingException e) {
-			((Logmanager)Utils.getLogger()).error(e);
+			Utils.getLogger().error(e);
 		}
 		return "{}";
 	}	

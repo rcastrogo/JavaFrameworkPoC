@@ -1,5 +1,5 @@
 -- 
--- 
+-- 66
 #app.dal.repositories.UsuariosRepository.select%SELECT Id, Nif, Nombre, Descripcion, FechaDeAlta FROM Usuario
 #app.dal.repositories.UsuariosRepository.delete%DELETE FROM Usuario WHERE Id = ?;
 #app.dal.repositories.UsuariosRepository.insert%INSERT INTO Usuario (Nif, Nombre, Descripcion, FechaDeAlta) VALUES(?, ?, ?, GETDATE());

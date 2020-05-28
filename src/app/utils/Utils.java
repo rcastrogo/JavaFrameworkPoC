@@ -22,8 +22,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import app.loggin.ILogger;
+import app.loggin.Log4javaLogger;
 import app.loggin.Logmanager;
+import app.loggin.StdOutLogger;
 
 public class Utils {
 
@@ -36,6 +37,8 @@ public class Utils {
 		try {
 			logmanager = new Logmanager();			
 			props = util.getPropertiesFromClasspath("binders.properties"); 
+			logmanager.addLogger(new StdOutLogger());
+			logmanager.addLogger(new Log4javaLogger());
 		} catch (IOException e) {
 			if(logmanager != null) {
 				logmanager.error(e);
@@ -145,7 +148,7 @@ public class Utils {
     return props;
   }
 
-  public static ILogger getLogger() {
+  public static Logmanager getLogger() {
   	return logmanager;
   }
   

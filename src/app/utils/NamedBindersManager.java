@@ -9,10 +9,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import app.loggin.Logmanager;
 import app.model.Entity;
 import app.utils.compiler.DynamicCompiler;
-import app.utils.Utils;
 
 public class NamedBindersManager {
 
@@ -61,7 +59,7 @@ public class NamedBindersManager {
 			Utils.getLogger().log("%1$s named binders", defs.size());
 			Utils.getLogger().log("----------------------------------------------------------------------------------------------------");	
     } catch (IOException e) {
-    	((Logmanager)Utils.getLogger()).error(e);
+    	Utils.getLogger().error(e);
 		};
 	}
 	
@@ -90,7 +88,7 @@ public class NamedBindersManager {
 			sb.append(String.format("      target.%1$s = %2$s;\n", field, dbMethod));
 		}
 		sb.append("    } catch (SQLException e) {\n");
-		sb.append("      ((Logmanager)app.utils.Utils.getLogger()).error(e);\n");
+		sb.append("      app.utils.Utils.getLogger().error(e);\n");
 		sb.append("    }\n");
 		sb.append("  }\n");	
 	}
@@ -99,7 +97,6 @@ public class NamedBindersManager {
 		try {		
 			StringBuilder sb = new StringBuilder();
 			sb.append("package app.binders;\n");
-			sb.append("import app.loggin.Logmanager;\n");
 			sb.append("import app.model.entities.*;\n");
 			sb.append("import java.sql.ResultSet;\n");
 			sb.append("import java.sql.SQLException;\n");
@@ -148,7 +145,7 @@ public class NamedBindersManager {
 				method = NamedBindersManager.class.getMethod(name, target.getClass(), ResultSet.class);
 			} catch (NoSuchMethodException | 
 			         SecurityException e) {
-				((Logmanager)Utils.getLogger()).error(e);
+				Utils.getLogger().error(e);
 			}
 			binders.put(name, method);
 		}
@@ -157,7 +154,7 @@ public class NamedBindersManager {
 		}  catch (IllegalAccessException   |
 							IllegalArgumentException | 
 							InvocationTargetException e) {
-			((Logmanager)Utils.getLogger()).error(e);
+			Utils.getLogger().error(e);
 		}
 	}
 

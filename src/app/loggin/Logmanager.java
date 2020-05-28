@@ -1,21 +1,21 @@
 package app.loggin;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class Logmanager implements ILogger {
-
-	private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 	
 	private List<ILogger> loggers;
 	
 	public Logmanager() {
 		loggers = new ArrayList<ILogger>();
-		loggers.add(new StdOutLogger());
-		log("Init app logmanager with StdOutLogger");
+	}
+	
+	public Logmanager addLogger(ILogger logger) {
+		log("AddLogger " + logger.getClass().getName());
+		loggers.add(logger);
+		return this;
 	}
 	
 	@Override
@@ -25,9 +25,8 @@ public class Logmanager implements ILogger {
 	
 	@Override
 	public ILogger log(String message) {
-		String s = String.format("%1$s %2$s", df.format(new Date()), message);
 		for(ILogger logger : loggers) {
-			logger.log(s);
+			logger.log(message);
 		}
 		return this;
 	}

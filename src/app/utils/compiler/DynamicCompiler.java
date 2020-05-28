@@ -2,7 +2,6 @@ package app.utils.compiler;
 
 import javax.tools.*;
 
-import app.loggin.Logmanager;
 import app.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -45,7 +44,7 @@ public class DynamicCompiler {
 			arguments.add("-classpath");
 			arguments.add(getJar().getAbsolutePath());
 		} catch (URISyntaxException e) {
-			((Logmanager)Utils.getLogger()).error(e);
+			Utils.getLogger().error(e);
 		}
 
 		return compiler.getTask(null, fileManager, null, arguments, null, files).call();
@@ -66,7 +65,7 @@ public class DynamicCompiler {
 									 .collect(Collectors.toList())
 									 .get(0);
 		} catch (SecurityException | ClassNotFoundException e) {
-			((Logmanager)Utils.getLogger()).error(e);
+			Utils.getLogger().error(e);
 		} 
 		return null;
 	}

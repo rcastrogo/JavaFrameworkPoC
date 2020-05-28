@@ -31,7 +31,7 @@ public class TestWSServlet extends HttpServlet {
 		response.setContentType("text/plain");
 
 		PrintWriter out = response.getWriter();
-		out.println("Method : " + request.getMethod());
+		out.println("Method : " + request.getMethod()); 
 		
     try {
       Call call = createWsClientCall("http://localhost:8080/web001/services/MathWS", "rcastro", "rcastro");
