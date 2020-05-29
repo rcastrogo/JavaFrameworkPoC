@@ -1,6 +1,7 @@
 package app.model;
 
 import java.util.ArrayList;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import app.dal.*;

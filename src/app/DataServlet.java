@@ -2,6 +2,7 @@ package app;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.*;
@@ -41,9 +42,9 @@ public class DataServlet extends HttpServlet {
 			out.println("Total usuarios: " + users.size());	
 			out.println("Select COUNT(*) usuarios: " + users.Count());
 
-			// var data = users.stream()
-			// 								.filter( u -> u.Id > 2)
-			// 								.collect(Collectors.toList());
+			 var data = users.stream()
+			 								.filter( u -> u.id > 2)
+			 								.collect(Collectors.toList());
 
 			users.add(new User());
 
@@ -52,7 +53,9 @@ public class DataServlet extends HttpServlet {
 
 			out.println(JsonSerializer.toXmlString(users));
 			out.println(JsonSerializer.toXmlString(user));
-
+			out.println("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
+			out.println("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
+			
 			// ================================
 			// Delete
 			// ================================

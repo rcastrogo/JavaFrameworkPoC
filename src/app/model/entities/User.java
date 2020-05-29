@@ -1,11 +1,14 @@
 package app.model.entities;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import app.dal.*;
 import app.dal.repositories.UsuariosRepository;
 import app.model.Entity;
 
 import app.utils.Loader;
 
+@XmlRootElement( name = "user")
 public class User extends Entity {
 
 	public Integer id = 0;
