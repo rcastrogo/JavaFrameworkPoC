@@ -12,8 +12,12 @@ public class BaseRepository implements Closeable {
   protected DbContext dbContext;
 
   public BaseRepository(DbContext dbContext) {
+  	if(dbContext == null) {
+  		this.dbContext = new DbContext();
+      return;
+  	}
     this.dbContext = dbContext;
-    auto = false;
+    auto = false; 	
   }
 
   public BaseRepository() {

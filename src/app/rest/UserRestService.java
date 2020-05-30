@@ -8,7 +8,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType; 
 import javax.ws.rs.core.Response;
 
-import app.model.entities.User; 
+import app.model.entities.User;
+import app.model.entities.Users; 
 
 @Path("/users") 
 @Consumes(MediaType.APPLICATION_JSON) 
@@ -35,5 +36,13 @@ public class UserRestService {
   public String getHtml() {
       return "<html lang=\"en\"><body><h1>Hello, World!!</body></h1></html>";
   }
+  
+  @Path("/all")
+  @GET() 
+  @Produces(MediaType.APPLICATION_JSON)
+  public Users getUsers() {     
+      return new Users().load();   
+  }
+  
   
 }
