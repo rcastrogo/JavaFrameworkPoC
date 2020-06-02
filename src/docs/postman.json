@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "d94a9cb0-d153-41e9-bb56-3a6d02c2d82e",
+		"name": "JAVA Servlet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetRequest",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "fdsaasfassd"
+				},
+				"url": {
+					"raw": "http://localhost:8080/web001/data",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"web001",
+						"data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvokeTestWS",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:hs=\"http://rcastrogo.es/tests/\">\n  <soapenv:Body>\n    <hs:call>\n     <name1>Rafa</name1>\n    </hs:call>\n  </soapenv:Body>\n</soapenv:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/web001/webservices/test-ws",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"web001",
+						"webservices",
+						"test-ws"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvokeAxisWS",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"type": "text"
+					},
+					{
+						"key": "SOAPAction",
+						"value": "http://localhost:8080/axis/services/Version",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n\n  <soap:Header> \n    <wsse:Security xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">         \n      <wsse:UsernameToken> \n        <wsse:Username>rcastroi</wsse:Username> \n        <wsse:Password>rcastro</wsse:Password>\n      </wsse:UsernameToken> \n    </wsse:Security>\n  </soap:Header>\n  <soap:Body>\n    <one>\n    </one>\n  </soap:Body>\n</soap:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/web001/services/MathWS",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"web001",
+						"services",
+						"MathWS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvokeCfxService",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "text/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:n=\"http://apps.rcastro/\">\n  <soap:Body>\n    <n:sayHi>\n    \t<arg0>abc</arg0>\n    </n:sayHi>\n  </soap:Body>\n</soap:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/cxf-service/HelloWorld",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cxf-service",
+						"HelloWorld"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
