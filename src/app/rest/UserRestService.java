@@ -9,8 +9,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import app.model.entities.User;
-import app.model.entities.Users; 
+import app.model.entities.Users;
+import app.rest.loggin.Logged; 
 
+@Logged
 @Path("/users") 
 @Consumes(MediaType.APPLICATION_JSON) 
 public class UserRestService {               
